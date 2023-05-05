@@ -27,7 +27,7 @@ class GetDepositAddressesTest extends TestCase
 EOL;
 
         $response = $this->createClient(
-            'https://api.kraken.com/0/private/DepositAddresses?asset=XBT&method=Bitcoin&new=0&nonce=1234567890', $json
+            'https://api.kraken.com/0/private/DepositAddresses?asset=XBT&method=Bitcoin&new=False&nonce=1234567890', $json
         )->getDepositAddresses('XBT', 'Bitcoin');
 
         $this->assertEquals('2N9fRkx5JTWXWHmXzZtvhQsufvoYRMq9ExV', $response[0]->address);

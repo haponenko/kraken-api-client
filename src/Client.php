@@ -287,7 +287,7 @@ final class Client implements Contracts\Client
             [
                 'asset' => $asset,
                 'method' => $method,
-                'new' => $new
+                'new' => $new ? 'True' : 'False'
             ]
         )->result;
     }
