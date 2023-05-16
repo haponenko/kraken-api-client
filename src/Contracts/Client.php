@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Butschster\Kraken\Contracts;
 
 use Brick\Math\BigDecimal;
@@ -9,6 +11,7 @@ use Butschster\Kraken\Responses\Entities\AddOrder\OrderAdded;
 use Butschster\Kraken\Responses\Entities\CancelOrdersAfterTimeout;
 use Butschster\Kraken\Responses\Entities\DepositAddresses;
 use Butschster\Kraken\Responses\Entities\DepositMethods;
+use Butschster\Kraken\Responses\Entities\DepositStatus;
 use Butschster\Kraken\Responses\Entities\OrderBook\Orders;
 use Butschster\Kraken\Responses\Entities\Orders\ClosedOrders;
 use Butschster\Kraken\Responses\Entities\Orders\Order;
@@ -18,7 +21,9 @@ use Butschster\Kraken\Responses\Entities\TickerInformation;
 use Butschster\Kraken\Responses\Entities\TradableAsset;
 use Butschster\Kraken\Responses\Entities\TradeBalance;
 use Butschster\Kraken\Responses\Entities\WebsocketToken;
+use Butschster\Kraken\Responses\Entities\Withdraw;
 use Butschster\Kraken\Responses\Entities\WithdrawalInformation;
+use Butschster\Kraken\Responses\Entities\WithdrawalStatus;
 use Butschster\Kraken\ValueObjects\AssetClass;
 use Butschster\Kraken\ValueObjects\AssetPair;
 use Butschster\Kraken\ValueObjects\TradableInfo;
@@ -200,6 +205,16 @@ interface Client
     public function getDepositAddresses(string $asset, string $method, bool $new = false): array;
 
     /**
+     * Retrieve information about recent deposits. Any deposits initiated in the past 90 days will be included in
+     * the response, up to a maximum of 25 results, sorted by recency.
+     * @see https://docs.kraken.com/rest/#tag/User-Funding/operation/getStatusRecentDeposits
+     * @param string|null $asset Filter for specific asset being deposited
+     * @param string|null $method Filter for specific name of deposit method
+     * @return DepositStatus[]
+     */
+    public function getDepositStatus(?string $asset = null, ?string $method = null): array;
+
+    /**
      * Retrieve fee information about potential withdrawals for a particular asset, key and amount.
      * @see https://docs.kraken.com/rest/#operation/getWithdrawalInformation
      * @param string $asset Asset being withdrawn
@@ -208,4 +223,25 @@ interface Client
      * @return WithdrawalInformation
      */
     public function getWithdrawalInformation(string $asset, string $key, BigDecimal $amount): WithdrawalInformation;
+
+    /**
+     * Retrieve information about recent withdrawals. Any withdrawals initiated in the past 90 days will be included in
+     * the response, up to a maximum of 500 results, sorted by recency.
+     * @see https://docs.kraken.com/rest/#tag/User-Funding/operation/getStatusRecentWithdrawals
+     * @param string|null $asset Filter for specific asset being deposited
+     * @param string|null $method Filter for specific name of deposit method
+     * @return WithdrawalStatus[]
+     */
+    public function getWithdrawalStatus(?string $asset = null, ?string $method = null): array;
+
+    /**
+     * Retrieve information about recent withdrawals. Any withdrawals initiated in the past 90 days will be included in
+     * the response, up to a maximum of 500 results, sorted by recency.
+     * @see https://docs.kraken.com/rest/#tag/User-Funding/operation/withdrawFunds
+     * @param string $asset Asset being withdrawn
+     * @param string $key Withdrawal key name, as set up on your account
+     * @param BigDecimal $amount Amount to be withdrawn
+     * @return Withdraw
+     */
+    public function withdraw(string $asset, string $key, BigDecimal $amount): Withdraw;
 }

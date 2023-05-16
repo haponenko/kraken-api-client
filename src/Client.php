@@ -15,6 +15,7 @@ use Butschster\Kraken\Responses\{AccountBalanceResponse,
     ClosedOrdersResponse,
     DepositAddressesResponse,
     DepositMethodsResponse,
+    DepositStatusResponse,
     Entities\AddOrder\OrderAdded,
     Entities\CancelOrdersAfterTimeout,
     Entities\DepositMethods,
@@ -23,7 +24,9 @@ use Butschster\Kraken\Responses\{AccountBalanceResponse,
     Entities\SystemStatus,
     Entities\TradeBalance,
     Entities\WebsocketToken,
+    Entities\Withdraw,
     Entities\WithdrawalInformation,
+    Entities\WithdrawalStatus,
     GetWebSocketsTokenResponse,
     OpenOrdersResponse,
     OrderBookResponse,
@@ -33,7 +36,9 @@ use Butschster\Kraken\Responses\{AccountBalanceResponse,
     TickerInformationResponse,
     TradableAssetPairsResponse,
     TradeBalanceResponse,
-    WithdrawalInformationResponse};
+    WithdrawalInformationResponse,
+    WithdrawalStatusResponse,
+    WithdrawResponse};
 use Butschster\Kraken\ValueObjects\{
     AssetClass, AssetPair, TradableInfo
 };
@@ -293,6 +298,24 @@ final class Client implements Contracts\Client
     }
 
     /** @inheritDoc */
+    public function getDepositStatus(?string $asset = null, ?string $method = null): array
+    {
+        $params = [];
+        if ($asset !== null) {
+            $params['asset'] = $asset;
+        }
+        if ($method !== null) {
+            $params['method'] = $method;
+        }
+
+        return $this->request(
+            'private/DepositStatus',
+            DepositStatusResponse::class,
+            $params
+        )->result;
+    }
+
+    /** @inheritDoc */
     public function getWebsocketsToken(): WebsocketToken
     {
         return $this->request(
@@ -311,6 +334,38 @@ final class Client implements Contracts\Client
                 'asset' => $asset,
                 'key' => $key,
                 'amount' => (string) $amount
+            ]
+        )->result;
+    }
+
+    /** @inheritDoc */
+    public function getWithdrawalStatus(?string $asset = null, ?string $method = null): array
+    {
+        $params = [];
+        if ($asset !== null) {
+            $params['asset'] = $asset;
+        }
+        if ($method !== null) {
+            $params['method'] = $method;
+        }
+
+        return $this->request(
+            'private/WithdrawStatus',
+            WithdrawalStatusResponse::class,
+            $params
+        )->result;
+    }
+
+    /** @inheritDoc */
+    public function withdraw(string $asset, string $key, BigDecimal $amount): Withdraw
+    {
+        return $this->request(
+            'private/Withdraw',
+            WithdrawResponse::class,
+            [
+                'asset' => $asset,
+                'key' => $key,
+                'amount' => (string) $amount,
             ]
         )->result;
     }
