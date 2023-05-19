@@ -29,6 +29,6 @@ class AssetPairTest extends TestCase
 
     function test_converts_to_string()
     {
-        $this->assertEquals('BTC,USD', (string) $this->pair);
+        $this->assertEquals('BTC/USD', (string) $this->pair);
     }
 }
