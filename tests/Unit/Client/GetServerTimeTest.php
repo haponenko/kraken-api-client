@@ -31,7 +31,7 @@ EOL;
     function test_error_response()
     {
         $this->expectException(KrakenApiErrorException::class);
-        $this->expectErrorMessage('Something went wrong: <Error 1> <Error 2>');
+        $this->expectExceptionMessage('Something went wrong: <Error 1> <Error 2>');
 
         $json = <<<EOL
 {

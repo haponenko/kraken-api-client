@@ -1,9 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Kraken\Tests\Unit\Client;
 
 use Carbon\Carbon;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
 use Kraken\Tests\TestCase;
 
 class GetClosedOrdersTest extends TestCase
@@ -125,11 +128,17 @@ EOL;
         Carbon::setTestNow('2020-01-01 00:00:00');
         $start = Carbon::now();
 
-        $response = $this->createClient(
+        $this->createClient(
             'https://api.kraken.com/0/private/ClosedOrders?trades=0&start=1577836800&nonce=1234567890', $this->json
         )->getClosedOrders(
             start: $start
         );
+
+        Http::assertSent(function (Request $request) {
+            return $request['trades'] == '0' &&
+                $request['start'] == '1577836800' &&
+                $request['nonce'] == '1234567890';
+        });
     }
 
     function test_request_with_end_date()
@@ -137,11 +146,17 @@ EOL;
         Carbon::setTestNow('2020-01-01 00:00:00');
         $end = Carbon::now();
 
-        $response = $this->createClient(
+        $this->createClient(
             'https://api.kraken.com/0/private/ClosedOrders?trades=0&end=1577836800&nonce=1234567890', $this->json
         )->getClosedOrders(
             end: $end
         );
+
+        Http::assertSent(function (Request $request) {
+            return $request['trades'] == '0' &&
+                $request['end'] == '1577836800' &&
+                $request['nonce'] == '1234567890';
+        });
     }
 
     function test_request_with_tx_id()
@@ -152,6 +167,13 @@ EOL;
             start: 'O6YDQ5-LOMWU-37YKEA',
             end: 'O6YDQ5-LOMWU-37YKEE'
         );
+
+        Http::assertSent(function (Request $request) {
+            return $request['trades'] == '0' &&
+                $request['start'] == 'O6YDQ5-LOMWU-37YKEA' &&
+                $request['end'] == 'O6YDQ5-LOMWU-37YKEE' &&
+                $request['nonce'] == '1234567890';
+        });
     }
 
     function test_request_with_offset()
@@ -161,6 +183,12 @@ EOL;
         )->getClosedOrders(
             offset: 10
         );
+
+        Http::assertSent(function (Request $request) {
+            return $request['trades'] == '0' &&
+                $request['ofs'] == '10' &&
+                $request['nonce'] == '1234567890';
+        });
     }
 
     function test_request_with_closetime()
@@ -170,5 +198,11 @@ EOL;
         )->getClosedOrders(
             closeTime: 'close'
         );
+
+        Http::assertSent(function (Request $request) {
+            return $request['trades'] == '0' &&
+                $request['closetime'] == 'close' &&
+                $request['nonce'] == '1234567890';
+        });
     }
 }
