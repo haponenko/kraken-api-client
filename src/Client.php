@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Butschster\Kraken;
 
-use Butschster\Kraken\Contracts\{
-    AddOrderRequest, NonceGenerator, Response
-};
 use Brick\Math\BigDecimal;
+use Butschster\Kraken\Contracts\{AddOrderRequest, NonceGenerator, Response};
 use Butschster\Kraken\Exceptions\KrakenApiErrorException;
 use Butschster\Kraken\Responses\{AccountBalanceResponse,
     AddOrderResponse,
@@ -26,7 +26,6 @@ use Butschster\Kraken\Responses\{AccountBalanceResponse,
     Entities\WebsocketToken,
     Entities\Withdraw,
     Entities\WithdrawalInformation,
-    Entities\WithdrawalStatus,
     GetWebSocketsTokenResponse,
     OpenOrdersResponse,
     OrderBookResponse,
@@ -39,14 +38,11 @@ use Butschster\Kraken\Responses\{AccountBalanceResponse,
     WithdrawalInformationResponse,
     WithdrawalStatusResponse,
     WithdrawResponse};
-use Butschster\Kraken\ValueObjects\{
-    AssetClass, AssetPair, TradableInfo
-};
+use Butschster\Kraken\ValueObjects\{AssetClass, AssetPair, TradableInfo};
 use DateTimeInterface;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use JMS\Serializer\SerializerInterface;
-
-use GuzzleHttp\ClientInterface as HttpClient;
 use Webmozart\Assert\Assert;
 
 final class Client implements Contracts\Client
@@ -56,7 +52,6 @@ final class Client implements Contracts\Client
     private const API_USER_AGENT = 'Kraken PHP API Agent';
 
     /**
-     * @param HttpClient $client
      * @param NonceGenerator $nonce
      * @param SerializerInterface $serializer
      * @param string $key API key
@@ -64,12 +59,11 @@ final class Client implements Contracts\Client
      * @param string|null $otp Two-factor password (if two-factor enabled, otherwise not required)
      */
     public function __construct(
-        private HttpClient $client,
-        private NonceGenerator $nonce,
-        private SerializerInterface $serializer,
-        private string $key,
-        private string $secret,
-        private ?string $otp = null
+        private readonly NonceGenerator $nonce,
+        private readonly SerializerInterface $serializer,
+        private readonly string $key,
+        private readonly string $secret,
+        private readonly ?string $otp = null
     )
     {
     }
@@ -394,12 +388,16 @@ final class Client implements Contracts\Client
             $headers['API-Sign'] = $this->makeSignature($method, $parameters);
         }
 
-
-        $response = $this->client->request('POST', self::API_URL . $this->buildPath($method), [
-            'headers' => $headers,
-            'form_params' => $parameters,
-            'verify' => true
-        ]);
+        $response = Http::retry(3, 100)
+            ->asForm()
+            ->withHeaders($headers)
+            ->withOptions([
+                'verify' => true,
+            ])
+            ->post(
+                self::API_URL . $this->buildPath($method),
+                $parameters
+            );
 
         $responseObject = $this->serializer->deserialize(
             $response->getBody()->getContents(),
