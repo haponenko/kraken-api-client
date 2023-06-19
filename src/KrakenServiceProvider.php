@@ -1,16 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Butschster\Kraken;
 
-use Butschster\Kraken\Serializer\BigDecimalHandler;
 use Butschster\Kraken\Serializer\SerializerFactory;
-use GuzzleHttp\Client as HttpClient;
 use Illuminate\Support\ServiceProvider;
-use JMS\Serializer\Handler\HandlerRegistry;
-use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
-use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
-use JMS\Serializer\SerializerBuilder;
-use JMS\Serializer\SerializerInterface;
 use React\EventLoop\Factory;
 
 class KrakenServiceProvider extends ServiceProvider
@@ -32,7 +27,6 @@ class KrakenServiceProvider extends ServiceProvider
             $config = $this->app->make('config')->get('kraken', []);
 
             return new Client(
-                new HttpClient(),
                 new NonceGenerator(),
                 (new SerializerFactory())->build(),
                 $config['key'] ?? null,
