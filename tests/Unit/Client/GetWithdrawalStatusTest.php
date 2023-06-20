@@ -88,7 +88,7 @@ EOL;
       "fee": "0.00015000",
       "time": 1617014586,
       "status": "Pending"
-    },
+    }
   ]
 }
 EOL;
