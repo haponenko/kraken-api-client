@@ -40,7 +40,7 @@ class WithdrawalStatus
      * @Type("string")
      * @SerializedName("txid")
      */
-    public string $transactionId;
+    public ?string $transactionId = null;
 
     /**
      * Method transaction information
