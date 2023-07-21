@@ -200,9 +200,10 @@ interface Client
      * @param string $asset Asset being deposited
      * @param string $method Name of the deposit method
      * @param bool $new Whether or not to generate a new address
+     * @param string|null $amount Amount you wish to deposit (only required for method=Bitcoin Lightning)
      * @return DepositAddresses[]
      */
-    public function getDepositAddresses(string $asset, string $method, bool $new = false): array;
+    public function getDepositAddresses(string $asset, string $method, bool $new = false, ?string $amount = null): array;
 
     /**
      * Retrieve information about recent deposits. Any deposits initiated in the past 90 days will be included in

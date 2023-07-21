@@ -278,16 +278,22 @@ final class Client implements Contracts\Client
     }
 
     /** @inheritDoc */
-    public function getDepositAddresses(string $asset, string $method, bool $new = false): array
+    public function getDepositAddresses(string $asset, string $method, bool $new = false, ?string $amount = null): array
     {
+        $params = [
+            'asset' => $asset,
+            'method' => $method,
+            'new' => $new ? 'True' : 'False'
+        ];
+
+        if ($amount !== null) {
+            $params['amount'] = $amount;
+        }
+
         return $this->request(
             'private/DepositAddresses',
             DepositAddressesResponse::class,
-            [
-                'asset' => $asset,
-                'method' => $method,
-                'new' => $new ? 'True' : 'False'
-            ]
+            $params
         )->result;
     }
 
