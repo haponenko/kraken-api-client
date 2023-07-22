@@ -190,9 +190,9 @@ interface Client
      * Retrieve methods available for depositing a particular asset.
      * @see https://docs.kraken.com/rest/#operation/getDepositMethods
      * @param string $asset Asset being deposited
-     * @return DepositMethods|null
+     * @return DepositMethods[]
      */
-    public function getDepositMethods(string $asset): ?DepositMethods;
+    public function getDepositMethods(string $asset): array;
 
     /**
      * Retrieve (or generate a new) deposit addresses for a particular asset and method.

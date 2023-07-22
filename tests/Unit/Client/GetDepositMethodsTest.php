@@ -25,7 +25,7 @@ EOL;
 
         $response = $this->createClient(
             'https://api.kraken.com/0/private/DepositMethods?asset=XBT&nonce=1234567890', $json
-        )->getDepositMethods('XBT');
+        )->getDepositMethods('XBT')[0];
 
         $this->assertEquals('Bitcoin', $response->method);
         $this->assertFalse($response->limit);

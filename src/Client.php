@@ -268,13 +268,13 @@ final class Client implements Contracts\Client
     }
 
     /** @inheritDoc */
-    public function getDepositMethods(string $asset): ?DepositMethods
+    public function getDepositMethods(string $asset): array
     {
         return $this->request(
             'private/DepositMethods',
             DepositMethodsResponse::class,
             ['asset' => $asset]
-        )->result[0] ?? null;
+        )->result;
     }
 
     /** @inheritDoc */
