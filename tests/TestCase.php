@@ -13,10 +13,10 @@ use Mockery as m;
 
 class TestCase extends BaseTestCase
 {
-    public function createClient(string $urlWithQueryString, string $json): Client
+    public function createClient(string $urlWithQueryString, string $responseJson): Client
     {
         Http::fake([
-            explode('?', $urlWithQueryString)[0] => Http::response($json),
+            explode('?', $urlWithQueryString)[0] => Http::response($responseJson),
         ]);
 
         $nonce = m::mock(NonceGenerator::class);

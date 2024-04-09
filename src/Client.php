@@ -394,6 +394,7 @@ final class Client implements Contracts\Client
             $headers['API-Sign'] = $this->makeSignature($method, $parameters);
         }
 
+        /** @var \Illuminate\Http\Client\Response $response */
         $response = Http::retry(3, 100)
             ->asForm()
             ->withHeaders($headers)
