@@ -43,6 +43,13 @@ class DepositMethods
      */
     public bool $generatedAddress;
 
+
+    /**
+     * Minimum net amount that can be deposited right now
+     * @Type("string")
+     */
+    public string $minimum;
+
     public function setLimit(string $limit): void
     {
         if ($limit === '') {
