@@ -35,6 +35,7 @@ use Butschster\Kraken\Responses\{AccountBalanceResponse,
     TradableAssetPairsResponse,
     TradeBalanceResponse,
     WithdrawalInformationResponse,
+    WithdrawalMethodsResponse,
     WithdrawalStatusResponse,
     WithdrawResponse};
 use Butschster\Kraken\ValueObjects\{AssetClass, AssetPair, TradableInfo};
@@ -291,7 +292,7 @@ final class Client implements Contracts\Client
 
         return $this->request(
             'private/WithdrawMethods',
-            DepositMethodsResponse::class,
+            WithdrawalMethodsResponse::class,
             $payload,
         )->result;
     }
