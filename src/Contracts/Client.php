@@ -23,6 +23,7 @@ use Butschster\Kraken\Responses\Entities\TradeBalance;
 use Butschster\Kraken\Responses\Entities\WebsocketToken;
 use Butschster\Kraken\Responses\Entities\Withdraw;
 use Butschster\Kraken\Responses\Entities\WithdrawalInformation;
+use Butschster\Kraken\Responses\Entities\WithdrawalMethods;
 use Butschster\Kraken\Responses\Entities\WithdrawalStatus;
 use Butschster\Kraken\ValueObjects\AssetClass;
 use Butschster\Kraken\ValueObjects\AssetPair;
@@ -193,6 +194,15 @@ interface Client
      * @return DepositMethods[]
      */
     public function getDepositMethods(string $asset): array;
+
+    /**
+     * Retrieve a list of withdrawal methods available for the user.
+     * @see https://docs.kraken.com/api/docs/rest-api/get-withdrawal-methods/
+     * @param string|null $asset Filter methods for specific asset
+     * @param string|null $network Filter methods for specific network
+     * @return WithdrawalMethods[]
+     */
+    public function getWithdrawalMethods(?string $asset = null, ?string $network = null): array;
 
     /**
      * Retrieve (or generate a new) deposit addresses for a particular asset and method.

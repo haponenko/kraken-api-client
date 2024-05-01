@@ -18,7 +18,6 @@ use Butschster\Kraken\Responses\{AccountBalanceResponse,
     DepositStatusResponse,
     Entities\AddOrder\OrderAdded,
     Entities\CancelOrdersAfterTimeout,
-    Entities\DepositMethods,
     Entities\Orders\ClosedOrders,
     Entities\ServerTime,
     Entities\SystemStatus,
@@ -274,6 +273,26 @@ final class Client implements Contracts\Client
             'private/DepositMethods',
             DepositMethodsResponse::class,
             ['asset' => $asset]
+        )->result;
+    }
+
+    /** @inheritDoc */
+    public function getWithdrawalMethods(?string $asset = null, ?string $network = null): array
+    {
+        $payload = [];
+
+        if ($asset !== null) {
+            $payload['asset'] = $asset;
+        }
+
+        if ($network !== null) {
+            $payload['network'] = $network;
+        }
+
+        return $this->request(
+            'private/WithdrawMethods',
+            DepositMethodsResponse::class,
+            $payload,
         )->result;
     }
 
