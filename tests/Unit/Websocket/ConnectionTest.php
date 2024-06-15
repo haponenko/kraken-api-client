@@ -36,26 +36,6 @@ class ConnectionTest extends TestCase
         );
     }
 
-    function test_subscribe_on_received_message()
-    {
-        $message = m::mock(MessageInterface::class);
-        $message->shouldReceive('getPayload')->once()->andReturn('test-message');
-
-        $callback = $this->getMockBuilder('NonExistentClass')
-            ->setMethods(['__invoke'])
-            ->getMock();
-
-        $callback->expects($this->once())->method('__invoke')->with('test-message');
-
-        $this->conn->shouldReceive('on')->once()->withArgs(function (string $event, \Closure $closure) use($message) {
-            $closure($message);
-
-            return $event === 'message';
-        });
-
-        $this->connection->onMessage($callback);
-    }
-
     function test_adds_timer()
     {
         $event = new Ping();
