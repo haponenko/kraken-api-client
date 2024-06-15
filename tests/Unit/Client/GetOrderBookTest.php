@@ -47,17 +47,17 @@ EOL;
             'https://api.kraken.com/0/public/Depth?pair=XBTUSD&count=100', $json
         )->getOrderBook(['XBTUSD']);
 
-        $this->assertCount(2, $response['XXBTZUSD']->asks);
-        $this->assertCount(2, $response['XXBTZUSD']->bids);
+        self::assertCount(2, $response['XXBTZUSD']->asks);
+        self::assertCount(2, $response['XXBTZUSD']->bids);
 
-        $this->assertEquals("52523.00000", (string) $response['XXBTZUSD']->asks[0]->getPrice());
-        $this->assertEquals("1.199", (string) $response['XXBTZUSD']->asks[0]->getVolume());
-        $this->assertEquals(1616663113, $response['XXBTZUSD']->asks[0]->getTimestamp());
-        $this->assertEquals('2021-03-25 09:05:13', $response['XXBTZUSD']->asks[0]->getDate()->format('Y-m-d H:i:s'));
+        self::assertEquals("52523.00000", (string) $response['XXBTZUSD']->asks[0]->getPrice());
+        self::assertEquals("1.199", (string) $response['XXBTZUSD']->asks[0]->getVolume());
+        self::assertEquals(1616663113, $response['XXBTZUSD']->asks[0]->getTimestamp());
+        self::assertEquals('2021-03-25 09:05:13', $response['XXBTZUSD']->asks[0]->getDate()->format('Y-m-d H:i:s'));
 
-        $this->assertEquals("52522.80000", (string) $response['XXBTZUSD']->bids[1]->getPrice());
-        $this->assertEquals("0.006", (string) $response['XXBTZUSD']->bids[1]->getVolume());
-        $this->assertEquals(1616663109, $response['XXBTZUSD']->bids[1]->getTimestamp());
-        $this->assertEquals('2021-03-25 09:05:09', $response['XXBTZUSD']->bids[1]->getDate()->format('Y-m-d H:i:s'));
+        self::assertEquals("52522.80000", (string) $response['XXBTZUSD']->bids[1]->getPrice());
+        self::assertEquals("0.006", (string) $response['XXBTZUSD']->bids[1]->getVolume());
+        self::assertEquals(1616663109, $response['XXBTZUSD']->bids[1]->getTimestamp());
+        self::assertEquals('2021-03-25 09:05:09', $response['XXBTZUSD']->bids[1]->getDate()->format('Y-m-d H:i:s'));
     }
 }
