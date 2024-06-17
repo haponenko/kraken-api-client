@@ -221,6 +221,7 @@ interface Client
      * @see https://docs.kraken.com/rest/#tag/Funding/operation/getStatusRecentDeposits
      * @param string|null $asset Filter for specific asset being deposited
      * @param string|null $method Filter for specific name of deposit method
+     * @param int|null $startTimestamp Starting unix timestamp or order tx ID of results (exclusive)
      * @return DepositStatus[]
      */
     public function getDepositStatus(?string $asset = null, ?string $method = null, ?int $startTimestamp = null): array;
