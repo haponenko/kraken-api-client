@@ -35,7 +35,7 @@ EOL;
 
         $response = $this->createClient(
             'https://api.kraken.com/0/private/DepositStatus?asset=XBT&method=Bitcoin&nonce=1234567890', $json
-        )->getDepositStatus('XBT', 'Bitcoin');
+        )->getDepositStatus('XBT', 'Bitcoin', 1234567890);
 
         $this->assertEquals('Bitcoin', $response[0]->method);
         $this->assertEquals('string', $response[0]->class);

@@ -218,12 +218,12 @@ interface Client
     /**
      * Retrieve information about recent deposits. Any deposits initiated in the past 90 days will be included in
      * the response, up to a maximum of 25 results, sorted by recency.
-     * @see https://docs.kraken.com/rest/#tag/User-Funding/operation/getStatusRecentDeposits
+     * @see https://docs.kraken.com/rest/#tag/Funding/operation/getStatusRecentDeposits
      * @param string|null $asset Filter for specific asset being deposited
      * @param string|null $method Filter for specific name of deposit method
      * @return DepositStatus[]
      */
-    public function getDepositStatus(?string $asset = null, ?string $method = null): array;
+    public function getDepositStatus(?string $asset = null, ?string $method = null, ?int $startTimestamp = null): array;
 
     /**
      * Retrieve fee information about potential withdrawals for a particular asset, key and amount.
