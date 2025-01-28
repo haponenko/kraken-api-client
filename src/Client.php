@@ -323,9 +323,8 @@ final class Client implements Contracts\Client
         ?string $method = null,
         ?int $startTimestamp = null,
         ?int $endTimestamp = null,
-        bool|string $cursor = false,
-    ): array
-    {
+        bool|string $cursor = true,
+    ): array {
         $params = [];
         if ($asset !== null) {
             $params['asset'] = $asset;
