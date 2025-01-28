@@ -327,22 +327,27 @@ final class Client implements Contracts\Client
         bool|string $cursor = true,
     ): DepositStatus {
         $params = [];
-        if ($asset !== null) {
-            $params['asset'] = $asset;
-        }
-        if ($method !== null) {
-            $params['method'] = $method;
-        }
-        if ($startTimestamp !== null) {
-            $params['start'] = (string)$startTimestamp;
-        }
 
-        if ($endTimestamp !== null) {
-            $params['end'] = (string)$endTimestamp;
-        }
-
-        if ($cursor !== false) {
+        if (is_string($cursor)) {
             $params['cursor'] = $cursor;
+        } else {
+            if ($asset !== null) {
+                $params['asset'] = $asset;
+            }
+            if ($method !== null) {
+                $params['method'] = $method;
+            }
+            if ($startTimestamp !== null) {
+                $params['start'] = (string)$startTimestamp;
+            }
+
+            if ($endTimestamp !== null) {
+                $params['end'] = (string)$endTimestamp;
+            }
+
+            if ($cursor !== false) {
+                $params['cursor'] = $cursor;
+            }
         }
 
         return $this->request(
