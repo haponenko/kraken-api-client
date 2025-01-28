@@ -224,7 +224,13 @@ interface Client
      * @param int|null $startTimestamp Starting unix timestamp or order tx ID of results (exclusive)
      * @return DepositStatus[]
      */
-    public function getDepositStatus(?string $asset = null, ?string $method = null, ?int $startTimestamp = null): array;
+    public function getDepositStatus(
+        ?string $asset = null,
+        ?string $method = null,
+        ?int $startTimestamp = null,
+        ?int $endTimestamp = null,
+        bool|string $cursor = false,
+    ): array;
 
     /**
      * Retrieve fee information about potential withdrawals for a particular asset, key and amount.

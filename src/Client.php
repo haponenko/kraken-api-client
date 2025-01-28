@@ -318,7 +318,13 @@ final class Client implements Contracts\Client
     }
 
     /** @inheritDoc */
-    public function getDepositStatus(?string $asset = null, ?string $method = null, ?int $startTimestamp = null): array
+    public function getDepositStatus(
+        ?string $asset = null,
+        ?string $method = null,
+        ?int $startTimestamp = null,
+        ?int $endTimestamp = null,
+        bool|string $cursor = false,
+    ): array
     {
         $params = [];
         if ($asset !== null) {
@@ -329,6 +335,14 @@ final class Client implements Contracts\Client
         }
         if ($startTimestamp !== null) {
             $params['start'] = (string)$startTimestamp;
+        }
+
+        if ($endTimestamp !== null) {
+            $params['end'] = (string)$endTimestamp;
+        }
+
+        if ($cursor !== false) {
+            $params['cursor'] = $cursor;
         }
 
         return $this->request(
