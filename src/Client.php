@@ -18,6 +18,7 @@ use Butschster\Kraken\Responses\{AccountBalanceResponse,
     DepositStatusResponse,
     Entities\AddOrder\OrderAdded,
     Entities\CancelOrdersAfterTimeout,
+    Entities\DepositStatus,
     Entities\Orders\ClosedOrders,
     Entities\ServerTime,
     Entities\SystemStatus,
@@ -324,7 +325,7 @@ final class Client implements Contracts\Client
         ?int $startTimestamp = null,
         ?int $endTimestamp = null,
         bool|string $cursor = true,
-    ): array {
+    ): DepositStatus {
         $params = [];
         if ($asset !== null) {
             $params['asset'] = $asset;

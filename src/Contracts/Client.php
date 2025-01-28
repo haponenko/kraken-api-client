@@ -230,7 +230,7 @@ interface Client
         ?int $startTimestamp = null,
         ?int $endTimestamp = null,
         bool|string $cursor = true,
-    ): array;
+    ): DepositStatus;
 
     /**
      * Retrieve fee information about potential withdrawals for a particular asset, key and amount.

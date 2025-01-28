@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Butschster\Kraken\Responses;
 
-use JMS\Serializer\Annotation\Type;
+use Butschster\Kraken\Responses\Entities\DepositStatus;
 
 class DepositStatusResponse extends AbstractResponse
 {
-    /** @Type("array<string, Butschster\Kraken\Responses\Entities\DepositStatus>") */
-    public array $result = [];
+    public ?DepositStatus $result = null;
 }

@@ -12,9 +12,10 @@ class GetDepositStatusTest extends TestCase
     {
         $json = <<<EOL
 {
-  "result": [
+  "result":
     {
-        "deposit": {
+    "deposits": [
+        {
           "method": "Bitcoin",
           "aclass": "string",
           "asset": "XBT",
@@ -29,10 +30,10 @@ class GetDepositStatusTest extends TestCase
           "originators": [
             "string"
           ]
-        },
-        "next_cursor": "cursor"
-    }
-  ],
+        }
+    ],
+    "next_cursor": "cursor"
+    },
   "error": []
 }
 EOL;
@@ -41,18 +42,18 @@ EOL;
             'https://api.kraken.com/0/private/DepositStatus?asset=XBT&method=Bitcoin&nonce=1234567890', $json
         )->getDepositStatus('XBT', 'Bitcoin', 1234567890);
 
-        $this->assertEquals('Bitcoin', $response[0]->deposit->method);
-        $this->assertEquals('string', $response[0]->deposit->class);
-        $this->assertEquals('XBT', $response[0]->deposit->asset);
-        $this->assertEquals('refid', $response[0]->deposit->refId);
-        $this->assertEquals('txid', $response[0]->deposit->transactionId);
-        $this->assertEquals('info', $response[0]->deposit->info);
-        $this->assertEquals('0.72485000', (string) $response[0]->deposit->amount);
-        $this->assertEquals('0.00015000', (string) $response[0]->deposit->fee);
-        $this->assertEquals(0, $response[0]->deposit->time);
-        $this->assertNull($response[0]->deposit->status);
-        $this->assertEquals('return', $response[0]->deposit->statusProp);
-        $this->assertEquals(['string'], $response[0]->deposit->originators);
-        $this->assertEquals('cursor', $response[0]->nextCursor);
+        $this->assertEquals('Bitcoin', $response->deposits[0]->method);
+        $this->assertEquals('string', $response->deposits[0]->class);
+        $this->assertEquals('XBT', $response->deposits[0]->asset);
+        $this->assertEquals('refid', $response->deposits[0]->refId);
+        $this->assertEquals('txid', $response->deposits[0]->transactionId);
+        $this->assertEquals('info', $response->deposits[0]->info);
+        $this->assertEquals('0.72485000', (string) $response->deposits[0]->amount);
+        $this->assertEquals('0.00015000', (string) $response->deposits[0]->fee);
+        $this->assertEquals(0, $response->deposits[0]->time);
+        $this->assertNull($response->deposits[0]->status);
+        $this->assertEquals('return', $response->deposits[0]->statusProp);
+        $this->assertEquals(['string'], $response->deposits[0]->originators);
+        $this->assertEquals('cursor', $response->nextCursor);
     }
 }
