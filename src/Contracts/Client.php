@@ -229,6 +229,7 @@ interface Client
         ?string $method = null,
         ?int $startTimestamp = null,
         ?int $endTimestamp = null,
+        bool|string $cursor = true,
     ): array;
 
     /**
